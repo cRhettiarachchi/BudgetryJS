@@ -107,6 +107,11 @@ body {
     border-radius: 3px;
 }
 
+.no-input{
+    color: red;
+    display: none;
+}
+
 
 /**********************************************
 *** BOTTOM PART
