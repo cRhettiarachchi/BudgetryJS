@@ -43,7 +43,7 @@ var appController = (function(){
             
             // return the object created using function expression
             return (newValObj);
-        }
+        },
     }
 
 })();
@@ -55,8 +55,8 @@ var UIcontroller = (function(){
         value: '.add__value',
         add: '.add__btn',
         incomeContainer: 'income__list', // used as rep in the code to replace if it is an income 
-        expenseContainer: 'expenses__list' // used as rep in the code to replace if it is an expense
-
+        expenseContainer: 'expenses__list', // used as rep in the code to replace if it is an expense
+        inMessage: '.no-input'
     }
 
     return { 
@@ -66,6 +66,7 @@ var UIcontroller = (function(){
                 desc: document.querySelector(selectors.desc).value,
                 value: document.querySelector(selectors.value).value,
             }
+
             return(values); // return the value object to the controller module 
         },
 
@@ -96,6 +97,10 @@ var UIcontroller = (function(){
 
         }, // end of updateUI function 
 
+        noInputMessage: function(){
+            document.querySelector(selectors.inMessage).style.display = "inline-block";
+        },
+
         domSelectors: function(){ // to return the selectors object 
             return(selectors); // return of the selector object
         } 
@@ -123,18 +128,31 @@ var controller = (function(appCtrl, UIctrl){
     }
     
     function triggered(){
-        // get the value to variables 
-        var userInput = UIctrl.readValues();
 
-        // update the appController with the data and gets the returning object
-        var value = appCtrl.storeValue(userInput.type, userInput.desc, userInput.value);
+            // get the value to variables 
+            var userInput = UIctrl.readValues();
 
-        // update the bottom ui of the page 
-        UIctrl.updateUI(value, userInput.type);
+            // check if the input fields are empty
+            if(userInput.desc === "" || userInput.value === ""){
+                UIctrl.noInputMessage();
+            }
+            else{
 
-        // add or reduce the amount from the the monthly income 
+                // make the message invisible 
+                document.querySelector(selectors.inMessage).style.display = "none";
 
-        // update the total income and expense at the top of the page 
+                // update the appController with the data and gets the returning object
+                var value = appCtrl.storeValue(userInput.type, userInput.desc, userInput.value);
+
+                // update the bottom ui of the page 
+                UIctrl.updateUI(value, userInput.type);
+
+                // add or reduce the amount from the the monthly income 
+
+                // update the total income and expense at the top of the page 
+        }
+        
+
     }
 
     return{
